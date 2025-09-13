@@ -1,13 +1,16 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_TURN_SPEED, PLAYER_SPEED, SHOT_SPEED, SHOT_RADIUS
+from constants import PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, SHOT_RADIUS
+from shot import Shot
+
 
 
 class Player(CircleShape):
+    
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
         self.rotation = 0
-
+        self.PLAYER_SHOOT_COOLDOWN = 0
 
 
     def triangle(self):
@@ -33,13 +36,14 @@ class Player(CircleShape):
     
     def update(self, dt):
         keys = pygame.key.get_pressed()
+        self.PLAYER_SHOOT_COOLDOWN -= dt
 
         if keys[pygame.K_a]:
-            print("a")
+            #print("a")
             self.rotate(-PLAYER_TURN_SPEED, dt)
             print(PLAYER_TURN_SPEED)
         if keys[pygame.K_d]:
-            print("d")
+            #print("d")
             self.rotate(PLAYER_TURN_SPEED, dt)
 
         if keys[pygame.K_w]:
@@ -47,30 +51,13 @@ class Player(CircleShape):
         if keys[pygame.K_s]:
             self.move(-dt)
 
-        if keys[pygame.K_SPACE]:
-            forward = pygame.Vector2(0, -1).rotate(self.rotation)
-            shot_position = self.position + forward * (self.radius + SHOT_RADIUS + 5)
-            self.shoot(SHOT_RADIUS, shot_position, forward * SHOT_SPEED)
+        if keys[pygame.K_SPACE] and self.PLAYER_SHOOT_COOLDOWN <= 0:
+            forward = pygame.Vector2(0, 1).rotate(self.rotation)
+            shot_position = self.position + forward * (self.radius + SHOT_RADIUS + 1)
+            self.shoot(SHOT_RADIUS, shot_position, forward * PLAYER_SHOOT_SPEED)
 
     def shoot(self, radius, position, velocity):
+        self.PLAYER_SHOOT_COOLDOWN = .3
         shot = Shot(position.x, position.y, radius)
         shot.velocity = velocity
-
-        #shot = Shot(self.position.x + self.radius, self.position.y + self.radius, SHOT_RADIUS)
-        #shot.rotate(Player.rotate())
-        #shot.velocity = SHOT_SPEED
-
-
-
-
-
-class Shot(CircleShape):
-    def __init__(self, x, y, radius):
-        super().__init__(x, y, radius)
-
-
-    def draw(self, screen):
-        pygame.draw.circle(screen, "white", (int(self.position.x), int(self.position.y)), self.radius, width=2)
-        
-    def update(self, dt):
-        self.position += self.velocity * dt    
+  

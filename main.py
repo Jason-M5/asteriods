@@ -52,12 +52,10 @@ def main():
                 sys.exit()
 
             if isinstance(i, Shot):
-                screen.fill("white")
-                screen.fill(5)
                 for a in drawable:
                     if isinstance(a, Asteroid) and i.collide(a):
                         i.kill()
-                        a.kill()
+                        a.split()
 
 
         pygame.display.flip()

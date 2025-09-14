@@ -23,9 +23,9 @@ class CircleShape(pygame.sprite.Sprite):
 
     def collide(self, roid):
         distance = pygame.math.Vector2.distance_to(self.position, roid.position)
-        print(distance)
+        #print(distance)
         if self.radius + roid.radius >= distance and self is not roid:
-            print(f"{self.radius} and {roid.radius}")
+            #print(f"{self.radius} and {roid.radius}")
             return True
         else:
             return False

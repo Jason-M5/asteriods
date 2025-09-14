@@ -26,7 +26,7 @@ class Player(CircleShape):
         pygame.draw.polygon(screen, "white", self.triangle(), width = 2)
 
     def rotate(self, PLAYER_TURN_SPEED, dt):
-        print(self.rotation)
+        #print(self.rotation)
             
         self.rotation += PLAYER_TURN_SPEED * dt
 
@@ -41,7 +41,7 @@ class Player(CircleShape):
         if keys[pygame.K_a]:
             #print("a")
             self.rotate(-PLAYER_TURN_SPEED, dt)
-            print(PLAYER_TURN_SPEED)
+            #print(PLAYER_TURN_SPEED)
         if keys[pygame.K_d]:
             #print("d")
             self.rotate(PLAYER_TURN_SPEED, dt)
